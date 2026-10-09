@@ -1,0 +1,12 @@
+{
+  "name": "health",
+  "mode": "weighted",
+  "steps": [
+    {
+      "endpoint": "health",
+      "weight": 1
+    }
+  ],
+  "variables": {},
+  "thinkTime": 0.1
+}

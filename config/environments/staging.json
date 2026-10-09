@@ -1,0 +1,18 @@
+{
+  "name": "staging",
+  "baseUrl": "https://api.staging.example.invalid",
+  "allowedHosts": [
+    "api.staging.example.invalid"
+  ],
+  "allowHttp": false,
+  "production": false,
+  "headers": {
+    "Accept": "application/json"
+  },
+  "auth": {
+    "type": "bearer",
+    "tokenEnv": "API_TOKEN"
+  },
+  "timeout": "10s",
+  "variables": {}
+}

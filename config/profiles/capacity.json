@@ -1,0 +1,33 @@
+{
+  "name": "capacity",
+  "scenario": {
+    "executor": "constant-arrival-rate",
+    "rate": 5,
+    "timeUnit": "1s",
+    "duration": "30s",
+    "preAllocatedVUs": 5,
+    "maxVUs": 15,
+    "gracefulStop": "5s"
+  },
+  "thresholds": {
+    "http_req_failed": [
+      "rate<0.01"
+    ],
+    "checks": [
+      "rate==1"
+    ],
+    "workflow_failed": [
+      "rate==0"
+    ],
+    "workflow_requests": [
+      "count>0"
+    ],
+    "http_req_duration": [
+      "p(95)<500",
+      "p(99)<1000"
+    ],
+    "dropped_iterations": [
+      "count==0"
+    ]
+  }
+}

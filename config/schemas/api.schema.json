@@ -1,0 +1,323 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "API endpoint catalog",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "endpoints"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$"
+    },
+    "endpoints": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/endpoint"
+      }
+    }
+  },
+  "$defs": {
+    "endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "path",
+        "expect"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "HEAD",
+            "OPTIONS"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^/(?!/)",
+          "description": "Path only. Each interpolated path value is URL encoded. Query strings use query."
+        },
+        "query": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean",
+                    "null"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "auth": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "const": "none"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "tokenEnv"
+              ],
+              "properties": {
+                "type": {
+                  "const": "bearer"
+                },
+                "tokenEnv": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]*$"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "keyEnv"
+              ],
+              "properties": {
+                "type": {
+                  "const": "api-key"
+                },
+                "header": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "keyEnv": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]*$"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "usernameEnv",
+                "passwordEnv"
+              ],
+              "properties": {
+                "type": {
+                  "const": "basic"
+                },
+                "usernameEnv": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]*$"
+                },
+                "passwordEnv": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]*$"
+                }
+              }
+            }
+          ]
+        },
+        "timeout": {
+          "type": "string",
+          "pattern": "^(?:[0-9]+(?:\\.[0-9]+)?(?:ms|s|m|h))+$"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "body": {},
+        "bodyFile": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Workspace-relative payload file; read at validation/build time."
+        },
+        "bodyType": {
+          "enum": [
+            "json",
+            "form",
+            "text"
+          ]
+        },
+        "expect": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "statuses"
+          ],
+          "properties": {
+            "statuses": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "integer",
+                "minimum": 100,
+                "maximum": 599
+              }
+            },
+            "json": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "path"
+                ],
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "equals": {},
+                  "exists": {
+                    "type": "boolean"
+                  }
+                },
+                "anyOf": [
+                  {
+                    "required": [
+                      "equals"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "exists"
+                    ]
+                  }
+                ]
+              }
+            },
+            "headers": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "extract": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "thresholds": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "duration": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 20,
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "threshold",
+                      "abortOnFail"
+                    ],
+                    "properties": {
+                      "threshold": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "abortOnFail": {
+                        "type": "boolean"
+                      },
+                      "delayAbortEval": {
+                        "type": "string",
+                        "pattern": "^(?:[0-9]+(?:\\.[0-9]+)?(?:ms|s|m|h))+$"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "failed": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 20,
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "threshold",
+                      "abortOnFail"
+                    ],
+                    "properties": {
+                      "threshold": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "abortOnFail": {
+                        "type": "boolean"
+                      },
+                      "delayAbortEval": {
+                        "type": "string",
+                        "pattern": "^(?:[0-9]+(?:\\.[0-9]+)?(?:ms|s|m|h))+$"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "weight": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        }
+      }
+    }
+  }
+}

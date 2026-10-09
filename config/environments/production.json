@@ -1,0 +1,18 @@
+{
+  "name": "production",
+  "baseUrl": "https://api.example.invalid",
+  "allowedHosts": [
+    "api.example.invalid"
+  ],
+  "allowHttp": false,
+  "production": true,
+  "headers": {
+    "Accept": "application/json"
+  },
+  "auth": {
+    "type": "bearer",
+    "tokenEnv": "API_TOKEN"
+  },
+  "timeout": "10s",
+  "variables": {}
+}

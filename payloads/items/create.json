@@ -1,0 +1,5 @@
+{
+  "name": "{{data.name}}",
+  "quantity": "{{data.quantity}}",
+  "reference": "{{runtime.uuid}}"
+}

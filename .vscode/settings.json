@@ -1,0 +1,33 @@
+{
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "/config/environments/*.json"
+      ],
+      "url": "./config/schemas/environment.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/config/apis/*.json"
+      ],
+      "url": "./config/schemas/api.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/config/suites/*.json"
+      ],
+      "url": "./config/schemas/suite.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/config/profiles/*.json"
+      ],
+      "url": "./config/schemas/profile.schema.json"
+    }
+  ]
+}

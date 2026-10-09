@@ -1,0 +1,27 @@
+{
+  "name": "load",
+  "scenario": {
+    "executor": "constant-vus",
+    "vus": 5,
+    "duration": "30s",
+    "gracefulStop": "5s"
+  },
+  "thresholds": {
+    "http_req_failed": [
+      "rate<0.01"
+    ],
+    "checks": [
+      "rate==1"
+    ],
+    "workflow_failed": [
+      "rate==0"
+    ],
+    "workflow_requests": [
+      "count>0"
+    ],
+    "http_req_duration": [
+      "p(95)<500",
+      "p(99)<1000"
+    ]
+  }
+}

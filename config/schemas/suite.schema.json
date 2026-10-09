@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "API workload suite",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "mode",
+    "steps"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$"
+    },
+    "mode": {
+      "enum": [
+        "journey",
+        "weighted"
+      ]
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "endpoint"
+        ],
+        "properties": {
+          "endpoint": {
+            "type": "string",
+            "minLength": 1
+          },
+          "weight": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000
+          },
+          "variables": {
+            "type": "object"
+          }
+        }
+      },
+      "maxItems": 100
+    },
+    "variables": {
+      "type": "object"
+    },
+    "datasetFile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "thinkTime": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Seconds of pacing after successful main requests and after a failed iteration.",
+      "maximum": 60
+    },
+    "cleanup": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "endpoint"
+        ],
+        "properties": {
+          "endpoint": {
+            "type": "string",
+            "minLength": 1
+          },
+          "weight": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "variables": {
+            "type": "object"
+          }
+        }
+      },
+      "description": "Journey-only best-effort final requests, also attempted after a failed step.",
+      "maxItems": 100
+    },
+    "dataset": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100000,
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "not": {
+        "required": [
+          "dataset",
+          "datasetFile"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "weighted"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [
+            "cleanup"
+          ]
+        }
+      }
+    }
+  ]
+}

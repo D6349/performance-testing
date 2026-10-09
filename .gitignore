@@ -1,0 +1,30 @@
+# Local credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Build inputs can contain test data and configuration: keep private.
+.generated/
+artifacts/
+reports/
+results/
+.tools/
+
+# Dependencies and tool caches
+node_modules/
+.npm/
+coverage/
+.tmp/
+.cache/
+
+# Local editor and operating system files
+.vscode/*
+!.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
+*.log

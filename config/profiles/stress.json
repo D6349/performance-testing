@@ -1,0 +1,41 @@
+{
+  "name": "stress",
+  "scenario": {
+    "executor": "ramping-vus",
+    "startVUs": 0,
+    "stages": [
+      {
+        "duration": "15s",
+        "target": 5
+      },
+      {
+        "duration": "15s",
+        "target": 10
+      },
+      {
+        "duration": "15s",
+        "target": 0
+      }
+    ],
+    "gracefulRampDown": "5s",
+    "gracefulStop": "5s"
+  },
+  "thresholds": {
+    "http_req_failed": [
+      "rate<0.01"
+    ],
+    "checks": [
+      "rate==1"
+    ],
+    "workflow_failed": [
+      "rate==0"
+    ],
+    "workflow_requests": [
+      "count>0"
+    ],
+    "http_req_duration": [
+      "p(95)<500",
+      "p(99)<1000"
+    ]
+  }
+}

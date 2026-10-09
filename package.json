@@ -1,0 +1,24 @@
+{
+  "name": "api-performance-testing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Configuration-driven, secure k6 API performance testing framework",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "doctor": "node scripts/doctor.mjs",
+    "perf": "node scripts/cli.mjs run",
+    "validate": "node scripts/cli.mjs validate",
+    "demo": "node scripts/demo.mjs",
+    "mock": "node scripts/mock-server.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "node scripts/check.mjs",
+    "list": "node scripts/cli.mjs list",
+    "integration": "node --test tests/*.integration.mjs",
+    "report:excel": "node scripts/export-excel.mjs",
+    "results:migrate": "node scripts/migrate-results.mjs",
+    "results:index": "node scripts/results-index.mjs"
+  }
+}

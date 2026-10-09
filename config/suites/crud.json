@@ -1,0 +1,26 @@
+{
+  "name": "crud",
+  "mode": "journey",
+  "steps": [
+    {
+      "endpoint": "health"
+    },
+    {
+      "endpoint": "createItem"
+    },
+    {
+      "endpoint": "readItem"
+    },
+    {
+      "endpoint": "updateItem"
+    }
+  ],
+  "variables": {},
+  "datasetFile": "data/items.json",
+  "thinkTime": 0.1,
+  "cleanup": [
+    {
+      "endpoint": "deleteItem"
+    }
+  ]
+}

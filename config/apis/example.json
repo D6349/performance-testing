@@ -1,0 +1,85 @@
+{
+  "name": "example",
+  "endpoints": {
+    "health": {
+      "method": "GET",
+      "path": "/health",
+      "expect": {
+        "statuses": [
+          200
+        ],
+        "json": [
+          {
+            "path": "status",
+            "equals": "ok"
+          }
+        ]
+      }
+    },
+    "createItem": {
+      "method": "POST",
+      "path": "/items",
+      "bodyFile": "payloads/items/create.json",
+      "bodyType": "json",
+      "expect": {
+        "statuses": [
+          201
+        ],
+        "json": [
+          {
+            "path": "id",
+            "exists": true
+          },
+          {
+            "path": "name",
+            "equals": "{{data.name}}"
+          }
+        ]
+      },
+      "extract": {
+        "itemId": "id"
+      }
+    },
+    "readItem": {
+      "method": "GET",
+      "path": "/items/{{vars.itemId}}",
+      "expect": {
+        "statuses": [
+          200
+        ],
+        "json": [
+          {
+            "path": "id",
+            "equals": "{{vars.itemId}}"
+          }
+        ]
+      }
+    },
+    "updateItem": {
+      "method": "PATCH",
+      "path": "/items/{{vars.itemId}}",
+      "bodyFile": "payloads/items/update.json",
+      "bodyType": "json",
+      "expect": {
+        "statuses": [
+          200
+        ],
+        "json": [
+          {
+            "path": "quantity",
+            "equals": 2
+          }
+        ]
+      }
+    },
+    "deleteItem": {
+      "method": "DELETE",
+      "path": "/items/{{vars.itemId}}",
+      "expect": {
+        "statuses": [
+          204
+        ]
+      }
+    }
+  }
+}
